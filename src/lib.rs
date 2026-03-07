@@ -1,7 +1,7 @@
-pub mod context;
-pub mod formatting;
-pub mod renderer;
-pub mod widgets;
+mod context;
+mod formatting;
+mod renderer;
+mod widgets;
 
 pub use context::Context;
 pub use renderer::render_prompt;
