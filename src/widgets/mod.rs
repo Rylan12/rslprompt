@@ -1,6 +1,7 @@
 use crate::{context::Context, formatting::Color};
 
 mod newline;
+mod path;
 mod prompt;
 
 /// A widget is a component of the prompt that can display content and have a color.
@@ -26,4 +27,9 @@ pub trait Widget {
     }
 }
 
-pub const DEFAULT_WIDGETS: &[&dyn Widget] = &[&newline::Newline, &prompt::Prompt];
+pub const DEFAULT_WIDGETS: &[&dyn Widget] = &[
+    &newline::Newline,
+    &path::Path,
+    &newline::Newline,
+    &prompt::Prompt,
+];
