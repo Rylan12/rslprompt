@@ -1,8 +1,4 @@
-use crate::{
-    context::{Context, ExitStatus},
-    formatting::Color,
-    widgets::Widget,
-};
+use crate::{context::Context, formatting::Color, widgets::Widget};
 
 /// Display the prompt symbol in a color that reflects the exit status of the last command.
 pub struct Prompt;
@@ -17,8 +13,8 @@ impl Widget for Prompt {
 
     fn color(&self, context: &Context) -> Color {
         match context.exit_code() {
-            ExitStatus::Failure(_) => Color::Red,
-            _ => Color::Green,
+            Some(0) => Color::Green,
+            _ => Color::Red,
         }
     }
 }
