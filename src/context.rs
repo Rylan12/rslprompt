@@ -1,7 +1,9 @@
+use std::path::{Path, PathBuf};
+
 /// Information about the current shell state.
 pub struct Context {
-    cwd: Option<String>,
-    home_dir: Option<String>,
+    cwd: Option<PathBuf>,
+    home_dir: Option<PathBuf>,
     ssh_connection: bool,
     exit_status: Option<u8>,
     vi_mode: Option<String>,
@@ -9,13 +11,9 @@ pub struct Context {
 
 impl Context {
     pub fn new() -> Self {
-        let cwd = std::env::current_dir()
-            .ok()
-            .and_then(|p| p.to_str().map(|s| s.to_string()));
-
         Self {
-            cwd,
-            home_dir: env("HOME"),
+            cwd: std::env::current_dir().ok(),
+            home_dir: env("HOME").map(PathBuf::from),
             ssh_connection: env("SSH_CONNECTION").is_some(),
             exit_status: env("EXIT_STATUS").and_then(|val| val.parse::<u8>().ok()),
             vi_mode: env("VI_MODE"),
@@ -23,12 +21,12 @@ impl Context {
     }
 
     /// The current working directory
-    pub fn cwd(&self) -> Option<&str> {
+    pub fn cwd(&self) -> Option<&Path> {
         self.cwd.as_deref()
     }
 
     /// The user's home directory
-    pub fn home_dir(&self) -> Option<&str> {
+    pub fn home_dir(&self) -> Option<&Path> {
         self.home_dir.as_deref()
     }
 

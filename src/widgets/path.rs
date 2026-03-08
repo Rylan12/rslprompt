@@ -5,19 +5,15 @@ pub struct Path;
 
 impl Widget for Path {
     fn content(&self, context: &Context) -> Option<String> {
-        let Some(cwd) = context.cwd() else {
-            return Some(String::from("?"));
-        };
+        let cwd = context.cwd()?;
 
-        let Some(home) = context.home_dir() else {
-            return Some(cwd.to_string());
-        };
-
-        if home.is_empty() || !cwd.starts_with(home) {
-            return Some(cwd.to_string());
+        if let Some(home) = context.home_dir()
+            && let Ok(relative) = cwd.strip_prefix(home)
+        {
+            return Some(format!("~/{}", relative.display()));
         }
 
-        Some(format!("~{}", &cwd[home.len()..]))
+        Some(cwd.display().to_string())
     }
 
     fn color(&self, context: &Context) -> Color {
