@@ -5,6 +5,7 @@ mod head_ref;
 mod newline;
 mod path;
 mod prompt;
+mod stash;
 
 /// A widget is a component of the prompt that can display content and have a color.
 /// Widgets are rendered in order to create the final prompt string.
@@ -33,6 +34,7 @@ pub const DEFAULT_WIDGETS: &[&dyn Widget] = &[
     &newline::Newline,
     &path::Path,
     &head_ref::HeadRef,
+    &stash::Stash,
     &exit_status::ExitStatus,
     &newline::Newline,
     &prompt::Prompt,

@@ -3,6 +3,7 @@ use std::path::{Path, PathBuf};
 pub struct GitInfo {
     is_git_repo: bool,
     head: Option<String>,
+    num_stashes: usize,
 }
 
 impl GitInfo {
@@ -14,6 +15,7 @@ impl GitInfo {
         Self {
             is_git_repo: true,
             head: get_git_head(root.as_ref()),
+            num_stashes: get_num_stashes(root.as_ref()),
         }
     }
 
@@ -21,6 +23,7 @@ impl GitInfo {
         Self {
             is_git_repo: false,
             head: None,
+            num_stashes: 0,
         }
     }
 
@@ -32,6 +35,11 @@ impl GitInfo {
     /// The HEAD ref of the current Git repository
     pub fn head(&self) -> Option<&str> {
         self.head.as_deref()
+    }
+
+    /// The number of stashes in the current Git repository
+    pub fn num_stashes(&self) -> usize {
+        self.num_stashes
     }
 }
 
@@ -57,4 +65,12 @@ fn parse_git_head(head_content: String) -> Option<String> {
         .map(|s| s.to_string())
         // Otherwise, it's a detached HEAD with the SHA directly in the file
         .or_else(|| head_content.get(..7).map(|s| s.to_string()))
+}
+
+fn get_num_stashes(root: &Path) -> usize {
+    let stash_path = root.join(".git").join("logs").join("refs").join("stash");
+    std::fs::read_to_string(stash_path)
+        .ok()
+        .map(|s| s.lines().count())
+        .unwrap_or(0)
 }

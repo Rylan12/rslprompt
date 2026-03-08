@@ -4,6 +4,35 @@ const ZERO_WIDTH_BEGIN: &str = "%{";
 const ZERO_WIDTH_END: &str = "%}";
 const SGR_RESET: &str = "\x1b[0m";
 
+const SUPERSCRIPT_DIGITS: &str = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+const SUPERSCRIPT_CAPITALS: &str = "ᴬᴮᶜᴰᴱꟳᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾꟴᴿˢᵀᵁⱽᵂ   ";
+const SUPERSCRIPT_LOWERCASE: &str = "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ ʳˢᵗᵘᵛʷˣʸᶻ";
+
+pub fn to_superscript(s: &str) -> String {
+    s.chars()
+        .map(|c| {
+            if c.is_ascii_digit() {
+                SUPERSCRIPT_DIGITS
+                    .chars()
+                    .nth(c.to_digit(10).unwrap() as usize)
+                    .unwrap_or(c)
+            } else if c.is_ascii_uppercase() {
+                SUPERSCRIPT_CAPITALS
+                    .chars()
+                    .nth((c as u8 - b'A') as usize)
+                    .unwrap_or(c)
+            } else if c.is_ascii_lowercase() {
+                SUPERSCRIPT_LOWERCASE
+                    .chars()
+                    .nth((c as u8 - b'a') as usize)
+                    .unwrap_or(c)
+            } else {
+                c
+            }
+        })
+        .collect()
+}
+
 /// A color that can be applied to widget content.
 pub enum Color {
     Default,
