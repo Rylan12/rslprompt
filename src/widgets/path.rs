@@ -10,11 +10,11 @@ impl Widget for Path {
         };
 
         let Some(home) = context.home_dir() else {
-            return Some(cwd);
+            return Some(cwd.to_string());
         };
 
-        if home.is_empty() || !cwd.starts_with(&home) {
-            return Some(cwd);
+        if home.is_empty() || !cwd.starts_with(home) {
+            return Some(cwd.to_string());
         }
 
         Some(format!("~{}", &cwd[home.len()..]))

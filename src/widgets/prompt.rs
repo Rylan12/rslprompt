@@ -6,13 +6,13 @@ pub struct Prompt;
 impl Widget for Prompt {
     fn content(&self, context: &Context) -> Option<String> {
         match context.vi_mode() {
-            Some(mode) if mode == "i" => Some("❯".to_string()),
+            Some("i") => Some("❯".to_string()),
             _ => Some("❮".to_string()),
         }
     }
 
     fn color(&self, context: &Context) -> Color {
-        match context.exit_code() {
+        match context.exit_status() {
             Some(0) => Color::Green,
             _ => Color::Red,
         }
