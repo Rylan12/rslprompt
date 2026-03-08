@@ -12,8 +12,8 @@ pub enum Color {
     Yellow,
     Blue,
     Magenta,
+    Cyan,
     White,
-    Gray,
     /// Don't apply any color codes to inherit the previous color settings.
     None,
 }
@@ -27,8 +27,8 @@ impl Display for Color {
             Color::Yellow => "\x1b[33m",
             Color::Blue => "\x1b[34m",
             Color::Magenta => "\x1b[35m",
+            Color::Cyan => "\x1b[36m",
             Color::White => "\x1b[37m",
-            Color::Gray => "\x1b[38;5;240m",
             Color::None => "",
         };
         write!(f, "{}", code)
