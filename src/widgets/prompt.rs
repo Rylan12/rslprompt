@@ -6,7 +6,7 @@ pub struct Prompt;
 impl Widget for Prompt {
     fn content(&self, context: &Context) -> Option<String> {
         match context.vi_mode() {
-            Some("i") => Some("❯".to_string()),
+            Some("i") | None => Some("❯".to_string()),
             _ => Some("❮".to_string()),
         }
     }
