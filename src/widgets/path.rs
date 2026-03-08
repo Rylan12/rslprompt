@@ -10,6 +10,9 @@ impl Widget for Path {
         if let Some(home) = context.home_dir()
             && let Ok(relative) = cwd.strip_prefix(home)
         {
+            if relative.as_os_str().is_empty() {
+                return Some("~".to_string());
+            }
             return Some(format!("~/{}", relative.display()));
         }
 
