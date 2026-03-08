@@ -4,9 +4,9 @@ use crate::{
     widgets::Widget,
 };
 
-pub struct Stash;
+pub struct GitStash;
 
-impl Widget for Stash {
+impl Widget for GitStash {
     fn content(&self, context: &Context) -> Option<String> {
         match context.git.num_stashes() {
             0 => None,

@@ -1,9 +1,9 @@
 use crate::{Context, widgets::Widget};
 
 /// Display the current working directory, using `~` for the home directory if applicable.
-pub struct HeadRef;
+pub struct GitRef;
 
-impl Widget for HeadRef {
+impl Widget for GitRef {
     fn content(&self, context: &Context) -> Option<String> {
         if !context.git.is_git_repo() {
             return None;
