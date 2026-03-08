@@ -1,7 +1,11 @@
 use std::path::{Path, PathBuf};
 
+use crate::git::GitInfo;
+
 /// Information about the current shell state.
 pub struct Context {
+    /// Information about the current directory's Git repository.
+    pub git: GitInfo,
     cwd: Option<PathBuf>,
     home_dir: Option<PathBuf>,
     ssh_connection: bool,
@@ -11,8 +15,17 @@ pub struct Context {
 
 impl Context {
     pub fn new() -> Self {
+        let cwd = std::env::current_dir().ok();
+
+        let git = if let Some(cwd) = &cwd {
+            GitInfo::new(cwd)
+        } else {
+            GitInfo::empty()
+        };
+
         Self {
-            cwd: std::env::current_dir().ok(),
+            git,
+            cwd,
             home_dir: env("HOME").map(PathBuf::from),
             ssh_connection: env("SSH_CONNECTION").is_some(),
             exit_status: env("EXIT_STATUS").and_then(|val| val.parse::<u8>().ok()),
