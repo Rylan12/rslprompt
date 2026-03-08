@@ -4,6 +4,7 @@ use crate::{
     widgets::Widget,
 };
 
+/// Display the number of stashed changes in the current Git repository.
 pub struct GitStash;
 
 impl Widget for GitStash {

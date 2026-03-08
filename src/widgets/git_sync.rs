@@ -1,5 +1,6 @@
 use crate::{Context, formatting::Color, widgets::Widget};
 
+/// Indicate if the local Git branch is out of sync with the remote.
 pub struct GitSync;
 
 impl Widget for GitSync {

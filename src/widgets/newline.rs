@@ -1,6 +1,6 @@
 use crate::widgets::Widget;
 
-/// Render a newline character
+/// Render a newline character.
 pub struct Newline;
 
 impl Widget for Newline {

@@ -4,6 +4,7 @@ use crate::{
     widgets::Widget,
 };
 
+/// Indicate ongoing Git operations (e.g., merge, rebase) using symbolic letters.
 pub struct GitOperations;
 
 impl Widget for GitOperations {

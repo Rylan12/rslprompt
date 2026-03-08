@@ -69,32 +69,32 @@ impl GitInfo {
         }
     }
 
-    /// Whether the current directory is part of a Git repository
+    /// Whether the current directory is part of a Git repository.
     pub fn is_git_repo(&self) -> bool {
         self.is_git_repo
     }
 
-    /// The HEAD ref of the current Git repository
+    /// The HEAD ref of the current Git repository.
     pub fn head_ref(&self) -> Option<&str> {
         self.head_ref.as_deref()
     }
 
-    /// The SHA of the current HEAD commit
+    /// The SHA of the current HEAD commit.
     pub fn head_sha(&self) -> Option<&str> {
         self.head_sha.as_deref()
     }
 
-    /// The SHA of the remote HEAD commit
+    /// The SHA of the remote HEAD commit.
     pub fn remote_head_sha(&self) -> Option<&str> {
         self.remote_head_sha.as_deref()
     }
 
-    /// The number of stashes in the current Git repository
+    /// The number of stashes in the current Git repository.
     pub fn num_stashes(&self) -> usize {
         self.num_stashes
     }
 
-    /// The current Git operations in progress (e.g. merge, rebase, etc.)
+    /// The current Git operations in progress (e.g. merge, rebase, etc).
     pub fn operations(&self) -> &[GitOperations] {
         &self.operations
     }
@@ -110,7 +110,7 @@ fn find_git_root(start: &Path) -> Option<PathBuf> {
 fn get_git_head_info(root: &Path) -> (Option<String>, Option<String>, Option<String>) {
     let (head_ref, head_sha) = parse_git_head_file(root);
 
-    // If we don't get a ref name, don't even try searching any remotes
+    // If we don't get a ref name, don't even try searching any remotes.
     let Some(head_ref) = head_ref else {
         return (None, head_sha, None);
     };
@@ -134,7 +134,7 @@ fn parse_git_head_file(root: &Path) -> (Option<String>, Option<String>) {
         return (Some(head_ref.to_string()), None);
     }
 
-    // For detached HEAD, the file contains the SHA directly
+    // For detached HEAD, the file contains the SHA directly.
     (None, Some(contents.trim().to_string()))
 }
 

@@ -33,22 +33,22 @@ impl Context {
         }
     }
 
-    /// The current working directory
+    /// The current working directory.
     pub fn cwd(&self) -> Option<&Path> {
         self.cwd.as_deref()
     }
 
-    /// The user's home directory
+    /// The user's home directory.
     pub fn home_dir(&self) -> Option<&Path> {
         self.home_dir.as_deref()
     }
 
-    /// Whether the current session is an SSH connection
+    /// Whether the current session is an SSH connection.
     pub fn ssh_connection(&self) -> bool {
         self.ssh_connection
     }
 
-    /// The exit code status of the last command executed
+    /// The exit code status of the last command executed.
     pub fn exit_status(&self) -> Option<u8> {
         self.exit_status
     }

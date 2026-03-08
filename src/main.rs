@@ -11,9 +11,9 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Initialize shell configuration
+    /// Initialize shell configuration.
     Init {
-        /// Shell type to configure
+        /// Shell type to configure.
         #[arg(value_enum)]
         shell: Shell,
     },
