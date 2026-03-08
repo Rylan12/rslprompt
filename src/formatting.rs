@@ -72,4 +72,9 @@ impl Color {
             _ => format!("{}{}{}", ZERO_WIDTH_BEGIN, self, ZERO_WIDTH_END),
         }
     }
+
+    /// Return the ANSI escape codes to reset to default color.
+    pub fn reset() -> String {
+        format!("{}{}{}", ZERO_WIDTH_BEGIN, Color::Default, ZERO_WIDTH_END)
+    }
 }

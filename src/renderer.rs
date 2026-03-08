@@ -1,4 +1,4 @@
-use crate::{context::Context, widgets::Widget};
+use crate::{context::Context, formatting::Color, widgets::Widget};
 
 pub fn render_prompt(widgets: &[&dyn Widget], context: &Context) -> String {
     let mut output = String::new();
@@ -15,7 +15,7 @@ pub fn render_prompt(widgets: &[&dyn Widget], context: &Context) -> String {
         space_allowed = widget.allow_space_after();
     }
 
-    format!("{} ", output)
+    format!("{}{} ", output, Color::reset())
 }
 
 fn render_widget(widget: &dyn Widget, context: &Context) -> String {
