@@ -25,15 +25,15 @@ fn zsh_config() -> String {
         "# rslprompt zsh setup
 set -o promptsubst
 PROMPT='$(PS1_EXEC_NO=$__ps1_exec_no VI_MODE=$ZVM_MODE EXIT_STATUS=$? SHELL_PID=$$ {})'
-function __ps1_exec_incr() {{
-    __ps1_exec_no=$((__ps1_exec_no+1))
-}}
-precmd_functions+=(__ps1_exec_incr)
-TRAPALRM() {{
-    if [[ -n \"$WIDGET\" ]]; then
-        zle reset-prompt
-    fi
-}}",
+# function __ps1_exec_incr() {{
+#     __ps1_exec_no=$((__ps1_exec_no+1))
+# }}
+# precmd_functions+=(__ps1_exec_incr)
+# TRAPALRM() {{
+#     if [[ -n \"$WIDGET\" ]]; then
+#         zle reset-prompt
+#     fi
+# }}",
         exec_path()
     )
 }
