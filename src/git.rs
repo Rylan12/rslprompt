@@ -1,29 +1,45 @@
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub struct GitInfo {
+    is_git_repo: bool,
     head: Option<String>,
 }
 
 impl GitInfo {
     pub fn new(cwd: &Path) -> Self {
-        let root = cwd
-            .ancestors()
-            .find(|p| p.join(".git").is_dir())
-            .map(Path::to_path_buf);
+        let Some(root) = find_git_root(cwd) else {
+            return Self::empty();
+        };
 
-        let head = root.as_ref().and_then(|r| get_git_head(r));
-
-        Self { head }
+        Self {
+            is_git_repo: true,
+            head: get_git_head(root.as_ref()),
+        }
     }
 
     pub fn empty() -> Self {
-        Self { head: None }
+        Self {
+            is_git_repo: false,
+            head: None,
+        }
+    }
+
+    /// Whether the current directory is part of a Git repository
+    pub fn is_git_repo(&self) -> bool {
+        self.is_git_repo
     }
 
     /// The HEAD ref of the current Git repository
     pub fn head(&self) -> Option<&str> {
         self.head.as_deref()
     }
+}
+
+fn find_git_root(start: &Path) -> Option<PathBuf> {
+    start
+        .ancestors()
+        .find(|p| p.join(".git").is_dir())
+        .map(Path::to_path_buf)
 }
 
 fn get_git_head(root: &Path) -> Option<String> {

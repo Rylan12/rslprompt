@@ -13,7 +13,7 @@ pub trait Widget {
 
     /// Returns the color to use for this widget.
     fn color(&self, _context: &Context) -> Color {
-        Color::None
+        Color::Default
     }
 
     /// Whether to request a space before this widget when rendering.

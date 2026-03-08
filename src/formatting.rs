@@ -36,22 +36,11 @@ impl Display for Color {
 }
 
 impl Color {
-    /// Wraps the given text with zero-width markers and ANSI color escape codes.
-    pub fn wrap(&self, text: &str) -> String {
-        format!("{}{}{}", self.apply(), text, self.reset())
-    }
-
-    fn apply(&self) -> String {
+    /// Return the ANSI escape codes to activate the given color.
+    pub fn activate(&self) -> String {
         match self {
             Color::None => String::new(),
             _ => format!("{}{}{}", ZERO_WIDTH_BEGIN, self, ZERO_WIDTH_END),
-        }
-    }
-
-    fn reset(&self) -> String {
-        match self {
-            Color::None => String::new(),
-            _ => format!("{}{}{}", ZERO_WIDTH_BEGIN, SGR_RESET, ZERO_WIDTH_END),
         }
     }
 }

@@ -21,5 +21,5 @@ pub fn render_prompt(widgets: &[&dyn Widget], context: &Context) -> String {
 fn render_widget(widget: &dyn Widget, context: &Context) -> String {
     let content = widget.content(context).unwrap_or_default();
     let color = widget.color(context);
-    color.wrap(&content)
+    format!("{}{}", color.activate(), content)
 }
