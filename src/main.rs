@@ -1,4 +1,4 @@
-use rprompt::{Context, DEFAULT_WIDGETS, render_prompt};
+use rslprompt::{Context, DEFAULT_WIDGETS, render_prompt};
 
 fn main() {
     let context = Context::new();
