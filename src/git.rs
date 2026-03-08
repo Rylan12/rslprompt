@@ -33,7 +33,9 @@ impl GitOperations {
 
 pub struct GitInfo {
     is_git_repo: bool,
-    head: Option<String>,
+    head_ref: Option<String>,
+    head_sha: Option<String>,
+    remote_head_sha: Option<String>,
     num_stashes: usize,
     operations: Vec<GitOperations>,
 }
@@ -44,9 +46,13 @@ impl GitInfo {
             return Self::empty();
         };
 
+        let (head_ref, head_sha, remote_head_sha) = get_git_head_info(root.as_ref());
+
         Self {
             is_git_repo: true,
-            head: get_git_head(root.as_ref()),
+            head_ref,
+            head_sha,
+            remote_head_sha,
             num_stashes: get_num_stashes(root.as_ref()),
             operations: get_git_operations(root.as_ref()),
         }
@@ -55,7 +61,9 @@ impl GitInfo {
     pub fn empty() -> Self {
         Self {
             is_git_repo: false,
-            head: None,
+            head_ref: None,
+            head_sha: None,
+            remote_head_sha: None,
             num_stashes: 0,
             operations: Vec::new(),
         }
@@ -67,8 +75,18 @@ impl GitInfo {
     }
 
     /// The HEAD ref of the current Git repository
-    pub fn head(&self) -> Option<&str> {
-        self.head.as_deref()
+    pub fn head_ref(&self) -> Option<&str> {
+        self.head_ref.as_deref()
+    }
+
+    /// The SHA of the current HEAD commit
+    pub fn head_sha(&self) -> Option<&str> {
+        self.head_sha.as_deref()
+    }
+
+    /// The SHA of the remote HEAD commit
+    pub fn remote_head_sha(&self) -> Option<&str> {
+        self.remote_head_sha.as_deref()
     }
 
     /// The number of stashes in the current Git repository
@@ -89,21 +107,42 @@ fn find_git_root(start: &Path) -> Option<PathBuf> {
         .map(Path::to_path_buf)
 }
 
-fn get_git_head(root: &Path) -> Option<String> {
-    let head_path = root.join(".git").join("HEAD");
-    std::fs::read_to_string(head_path)
-        .ok()
-        .map(|s| s.trim().to_string())
-        .and_then(parse_git_head)
+fn get_git_head_info(root: &Path) -> (Option<String>, Option<String>, Option<String>) {
+    let (head_ref, head_sha) = parse_git_head_file(root);
+
+    // If we don't get a ref name, don't even try searching any remotes
+    let Some(head_ref) = head_ref else {
+        return (None, head_sha, None);
+    };
+
+    let head_ref_path = format!("refs/heads/{}", head_ref);
+    let head_sha = get_ref_sha(root, &head_ref_path);
+
+    let remote_head_ref_path = format!("refs/remotes/origin/{}", head_ref);
+    let remote_head_sha = get_ref_sha(root, &remote_head_ref_path);
+
+    (Some(head_ref), head_sha, remote_head_sha)
 }
 
-fn parse_git_head(head_content: String) -> Option<String> {
-    head_content
-        // Branches are in the format "ref: refs/heads/branch-name"
-        .strip_prefix("ref: refs/heads/")
-        .map(|s| s.to_string())
-        // Otherwise, it's a detached HEAD with the SHA directly in the file
-        .or_else(|| head_content.get(..7).map(|s| s.to_string()))
+fn parse_git_head_file(root: &Path) -> (Option<String>, Option<String>) {
+    let head_path = root.join(".git").join("HEAD");
+    let Ok(contents) = std::fs::read_to_string(head_path) else {
+        return (None, None);
+    };
+
+    if let Some(head_ref) = contents.trim().strip_prefix("ref: refs/heads/") {
+        return (Some(head_ref.to_string()), None);
+    }
+
+    // For detached HEAD, the file contains the SHA directly
+    (None, Some(contents.trim().to_string()))
+}
+
+fn get_ref_sha(root: &Path, ref_path: &str) -> Option<String> {
+    let ref_file = root.join(".git").join(ref_path);
+    std::fs::read_to_string(ref_file)
+        .ok()
+        .map(|s| s.trim().to_string())
 }
 
 fn get_num_stashes(root: &Path) -> usize {

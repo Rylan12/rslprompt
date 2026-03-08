@@ -4,6 +4,7 @@ mod exit_status;
 mod git_operations;
 mod git_ref;
 mod git_stash;
+mod git_sync;
 mod newline;
 mod path;
 mod prompt;
@@ -37,6 +38,7 @@ pub const DEFAULT_WIDGETS: &[&dyn Widget] = &[
     &git_operations::GitOperations,
     &git_ref::GitRef,
     &git_stash::GitStash,
+    &git_sync::GitSync,
     &exit_status::ExitStatus,
     &newline::Newline,
     &prompt::Prompt,

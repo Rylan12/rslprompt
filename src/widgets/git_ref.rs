@@ -9,10 +9,14 @@ impl Widget for GitRef {
             return None;
         }
 
-        let Some(head) = context.git.head() else {
-            return Some("???".to_string());
-        };
+        if let Some(head_ref) = context.git.head_ref() {
+            return Some(head_ref.to_string());
+        }
 
-        Some(head.to_string())
+        if let Some(head_sha) = context.git.head_sha() {
+            return Some(head_sha.chars().take(7).collect());
+        }
+
+        Some("???".to_string())
     }
 }
