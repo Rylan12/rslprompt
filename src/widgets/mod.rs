@@ -1,6 +1,7 @@
 use crate::{context::Context, formatting::Color};
 
 mod exit_status;
+mod git_operations;
 mod git_ref;
 mod git_stash;
 mod newline;
@@ -33,6 +34,7 @@ pub trait Widget {
 pub const DEFAULT_WIDGETS: &[&dyn Widget] = &[
     &newline::Newline,
     &path::Path,
+    &git_operations::GitOperations,
     &git_ref::GitRef,
     &git_stash::GitStash,
     &exit_status::ExitStatus,
