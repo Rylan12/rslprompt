@@ -1,5 +1,6 @@
 use crate::{context::Context, formatting::Color};
 
+mod exit_status;
 mod head_ref;
 mod newline;
 mod path;
@@ -32,6 +33,7 @@ pub const DEFAULT_WIDGETS: &[&dyn Widget] = &[
     &newline::Newline,
     &path::Path,
     &head_ref::HeadRef,
+    &exit_status::ExitStatus,
     &newline::Newline,
     &prompt::Prompt,
 ];
