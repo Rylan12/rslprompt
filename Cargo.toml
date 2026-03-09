@@ -1,7 +1,15 @@
 [package]
 name = "rslprompt"
 version = "0.1.0"
+authors = ["Rylan Polster <rslpolster@gmail.com>"]
 edition = "2024"
+description = "A fast, async zsh shell prompt."
+readme = "README.md"
+repository = "https://github.com/Rylan12/rslprompt"
+license = "MIT"
+keywords = ["shell", "prompt", "cli", "zsh", "async"]
+categories = ["command-line-utilities"]
+exclude = [".github/", ".gitignore"]
 
 [dependencies]
 clap = { version = "4.5.60", features = ["derive"] }
