@@ -33,6 +33,7 @@ pub trait Widget {
     }
 }
 
+/// The default set of widgets used to render the prompt.
 pub const DEFAULT_WIDGETS: &[&dyn Widget] = &[
     &newline::Newline,
     &world_worktree::WorldWorktree,

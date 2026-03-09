@@ -1,11 +1,13 @@
 use clap::ValueEnum;
 
+/// Supported shell types for prompt configuration.
 #[derive(Clone, ValueEnum)]
 pub enum Shell {
     Zsh,
 }
 
 impl Shell {
+    /// Generate the initialization script for this shell type.
     pub fn init_config(&self) -> String {
         match self {
             Shell::Zsh => zsh_config(),

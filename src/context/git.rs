@@ -4,6 +4,7 @@ use nix::unistd::Pid;
 
 use crate::{background::get_background_data, context::AsyncValue};
 
+/// Ongoing Git operations that can be in progress.
 #[derive(Copy, Clone)]
 pub enum GitOperations {
     CherryPick,
@@ -14,6 +15,7 @@ pub enum GitOperations {
 }
 
 impl GitOperations {
+    /// Get the single-letter symbolic representation of this operation.
     pub fn symbolic_letter(&self) -> &'static str {
         match self {
             GitOperations::CherryPick => "P",
@@ -42,6 +44,7 @@ pub enum GitStatus {
 }
 
 impl GitStatus {
+    /// Create a GitStatus from a boolean indicating whether there are changes.
     pub fn from_has_changes(has_changes: bool) -> Self {
         if has_changes {
             GitStatus::Dirty
@@ -51,6 +54,7 @@ impl GitStatus {
     }
 }
 
+/// Information about the current Git repository.
 pub struct GitContext {
     head_ref: Option<String>,
     head_sha: Option<String>,
@@ -61,6 +65,7 @@ pub struct GitContext {
 }
 
 impl GitContext {
+    /// Create a new GitContext for the given directory.
     pub fn new(cwd: &Path, shell_pid: Option<Pid>, exec_no: Option<u64>) -> Option<Self> {
         let root = find_git_root(cwd)?;
         let (head_ref, head_sha, remote_head_sha) = get_git_head_info(root.as_ref());

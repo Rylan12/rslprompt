@@ -1,5 +1,6 @@
 use crate::{context::Context, formatting::Color, widgets::Widget};
 
+/// Render a prompt string from a list of widgets and the current context.
 pub fn render_prompt(widgets: &[&dyn Widget], context: &Context) -> String {
     let mut output = String::new();
     let mut space_allowed = false;

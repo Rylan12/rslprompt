@@ -37,6 +37,7 @@ pub struct Context {
 }
 
 impl Context {
+    /// Create a new context by reading the current environment state.
     pub fn new() -> Self {
         let cwd = std::env::current_dir().ok();
         let home_dir = env("HOME").map(PathBuf::from);

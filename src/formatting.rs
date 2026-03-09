@@ -8,6 +8,10 @@ const SUPERSCRIPT_DIGITS: &str = "⁰¹²³⁴⁵⁶⁷⁸⁹";
 const SUPERSCRIPT_CAPITALS: &str = "ᴬᴮᶜᴰᴱꟳᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾꟴᴿˢᵀᵁⱽᵂ   ";
 const SUPERSCRIPT_LOWERCASE: &str = "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ ʳˢᵗᵘᵛʷˣʸᶻ";
 
+/// Convert a string to superscript characters (digits and ASCII letters).
+///
+/// There is no Unicode superscript character for the following characters: `X`, `Y`, `Z`, `q`.
+/// These are replaced with a space character.
 pub fn to_superscript(s: &str) -> String {
     s.chars()
         .map(|c| {
