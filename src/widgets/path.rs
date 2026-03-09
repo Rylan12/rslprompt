@@ -6,7 +6,7 @@ pub struct Path;
 impl Widget for Path {
     fn content(&self, context: &Context) -> Option<String> {
         // Worldpaths are already formatted correctly
-        if let Some(world) = &context.world {
+        if let Some(world) = context.world() {
             return Some(world.path().to_string());
         }
 

@@ -5,7 +5,8 @@ pub struct GitSync;
 
 impl Widget for GitSync {
     fn content(&self, context: &Context) -> Option<String> {
-        if context.git.head_sha()? == context.git.remote_head_sha()? {
+        let git = context.git()?;
+        if git.head_sha()? == git.remote_head_sha()? {
             return None;
         }
 

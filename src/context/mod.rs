@@ -27,9 +27,8 @@ impl<T> From<Option<T>> for AsyncValue<T> {
 
 /// Information about the current shell state.
 pub struct Context {
-    /// Information about the current directory's Git repository.
-    pub git: GitContext,
-    pub world: Option<WorldContext>,
+    git: Option<GitContext>,
+    world: Option<WorldContext>,
     cwd: Option<PathBuf>,
     home_dir: Option<PathBuf>,
     ssh_connection: bool,
@@ -57,18 +56,28 @@ impl Context {
         let git = if let Some(cwd) = &cwd {
             GitContext::new(cwd, shell_pid, exec_no)
         } else {
-            GitContext::empty()
+            None
         };
 
         Self {
-            cwd,
             git,
             world,
+            cwd,
             home_dir,
             ssh_connection: env("SSH_CONNECTION").is_some(),
             exit_status: env("EXIT_STATUS").and_then(|val| val.parse::<u8>().ok()),
             vi_mode: env("VI_MODE"),
         }
+    }
+
+    /// Information about the current directory's Git repository.
+    pub fn git(&self) -> Option<&GitContext> {
+        self.git.as_ref()
+    }
+
+    /// Information about the current directory's World tree (if applicable).
+    pub fn world(&self) -> Option<&WorldContext> {
+        self.world.as_ref()
     }
 
     /// The current working directory.

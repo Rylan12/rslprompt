@@ -9,13 +9,13 @@ pub struct GitOperations;
 
 impl Widget for GitOperations {
     fn content(&self, context: &Context) -> Option<String> {
-        if context.git.operations().is_empty() {
+        let operations = context.git()?.operations();
+
+        if operations.is_empty() {
             return None;
         }
 
-        let output = context
-            .git
-            .operations()
+        let output = operations
             .iter()
             .map(|op| to_superscript(op.symbolic_letter()))
             .collect();

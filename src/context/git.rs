@@ -52,7 +52,6 @@ impl GitStatus {
 }
 
 pub struct GitContext {
-    is_git_repo: bool,
     head_ref: Option<String>,
     head_sha: Option<String>,
     remote_head_sha: Option<String>,
@@ -62,11 +61,8 @@ pub struct GitContext {
 }
 
 impl GitContext {
-    pub fn new(cwd: &Path, shell_pid: Option<Pid>, exec_no: Option<u64>) -> Self {
-        let Some(root) = find_git_root(cwd) else {
-            return Self::empty();
-        };
-
+    pub fn new(cwd: &Path, shell_pid: Option<Pid>, exec_no: Option<u64>) -> Option<Self> {
+        let root = find_git_root(cwd)?;
         let (head_ref, head_sha, remote_head_sha) = get_git_head_info(root.as_ref());
 
         let background_data = match (shell_pid, exec_no) {
@@ -78,32 +74,14 @@ impl GitContext {
             .map(|data| data.has_changes.map(GitStatus::from_has_changes))
             .into();
 
-        Self {
-            is_git_repo: true,
+        Some(Self {
             head_ref,
             head_sha,
             remote_head_sha,
             num_stashes: get_num_stashes(root.as_ref()),
             operations: get_git_operations(root.as_ref()),
             status,
-        }
-    }
-
-    pub fn empty() -> Self {
-        Self {
-            is_git_repo: false,
-            head_ref: None,
-            head_sha: None,
-            remote_head_sha: None,
-            num_stashes: 0,
-            operations: Vec::new(),
-            status: AsyncValue::Pending,
-        }
-    }
-
-    /// Whether the current directory is part of a Git repository.
-    pub fn is_git_repo(&self) -> bool {
-        self.is_git_repo
+        })
     }
 
     /// The HEAD ref of the current Git repository.
