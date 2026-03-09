@@ -5,11 +5,21 @@ It is loosely inspired by [`pure`](https://github.com/sindresorhus/pure) and [`z
 
 ## Install
 
+### `cargo`
+
 ```bash
 cargo install rslprompt
 ```
 
-Then, add the following to your `zsh` configuration:
+### Homebrew
+
+```bash
+brew install rylan12/personal/rslprompt
+```
+
+## Setup
+
+Add the following to your `zsh` configuration:
 
 ```bash
 eval "$(rslprompt init zsh)"
