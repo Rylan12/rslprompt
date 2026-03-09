@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand};
+
 use rslprompt::{Context, DEFAULT_WIDGETS, Shell, render_prompt};
 
 #[derive(Parser)]

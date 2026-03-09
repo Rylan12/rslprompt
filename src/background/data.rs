@@ -1,28 +1,29 @@
-use std::{path::Path, process::Command};
+use std::path::Path;
+use std::process::Command;
 
 use serde::{Deserialize, Serialize};
 
 use crate::background::cache::CacheKey;
 
 #[derive(Serialize, Deserialize)]
-pub struct BackgroundData {
-    pub has_changes: Option<bool>,
+pub(crate) struct BackgroundData {
+    pub(crate) has_changes: Option<bool>,
 }
 
 impl BackgroundData {
-    pub fn fetch(cwd: &Path) -> Self {
+    pub(super) fn fetch(cwd: &Path) -> Self {
         Self {
             has_changes: fetch_git_has_changes(cwd),
         }
     }
 
-    pub fn read(key: &CacheKey) -> Option<Self> {
+    pub(super) fn read(key: &CacheKey) -> Option<Self> {
         let path = key.cache_path();
         let contents = std::fs::read_to_string(path).ok()?;
         serde_json::from_str(&contents).ok()
     }
 
-    pub fn write(&self, key: &CacheKey) -> std::io::Result<()> {
+    pub(super) fn write(&self, key: &CacheKey) -> std::io::Result<()> {
         let path = key.cache_path();
         let tmp_path = path.with_extension(format!("tmp-{}", std::process::id()));
         let contents = serde_json::to_string(self)?;

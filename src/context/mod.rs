@@ -1,11 +1,11 @@
+mod git;
+mod world;
+
 use std::path::{Path, PathBuf};
 
 use nix::unistd::Pid;
 
 use crate::context::{git::GitContext, world::WorldContext};
-
-mod git;
-mod world;
 
 pub use git::GitStatus;
 

@@ -1,5 +1,5 @@
 use crate::{
-    Context,
+    context::Context,
     formatting::{Color, to_superscript},
     widgets::Widget,
 };

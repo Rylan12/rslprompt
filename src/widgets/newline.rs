@@ -1,10 +1,10 @@
-use crate::widgets::Widget;
+use crate::{context::Context, widgets::Widget};
 
 /// Render a newline character.
 pub struct Newline;
 
 impl Widget for Newline {
-    fn content(&self, _context: &crate::context::Context) -> Option<String> {
+    fn content(&self, _context: &Context) -> Option<String> {
         Some("\n".to_string())
     }
 

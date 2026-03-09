@@ -1,6 +1,5 @@
 use crate::{
-    Context,
-    context::{AsyncValue, GitStatus},
+    context::{AsyncValue, Context, GitStatus},
     formatting::Color,
     widgets::Widget,
 };

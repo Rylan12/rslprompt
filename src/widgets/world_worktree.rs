@@ -1,4 +1,4 @@
-use crate::{Context, formatting::Color, widgets::Widget};
+use crate::{context::Context, formatting::Color, widgets::Widget};
 
 /// Display the current worktree in the world monorepo if applicable.
 pub struct WorldWorktree;

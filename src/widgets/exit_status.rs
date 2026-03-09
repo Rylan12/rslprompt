@@ -1,4 +1,4 @@
-use crate::{Context, formatting::Color, widgets::Widget};
+use crate::{context::Context, formatting::Color, widgets::Widget};
 
 /// Display the exit code of the last command if it was non-zero.
 pub struct ExitStatus;

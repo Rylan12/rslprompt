@@ -1,4 +1,4 @@
-use crate::{Context, formatting::Color, widgets::Widget};
+use crate::{context::Context, formatting::Color, widgets::Widget};
 
 /// Display the current working directory, using `~` for the home directory if applicable.
 pub struct Path;

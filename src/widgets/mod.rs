@@ -1,5 +1,3 @@
-use crate::{context::Context, formatting::Color};
-
 mod exit_status;
 mod git_operations;
 mod git_ref;
@@ -9,6 +7,8 @@ mod newline;
 mod path;
 mod prompt;
 mod world_worktree;
+
+use crate::{context::Context, formatting::Color};
 
 /// A widget is a component of the prompt that can display content and have a color.
 /// Widgets are rendered in order to create the final prompt string.
