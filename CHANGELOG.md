@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.1] - 2026-03-09
+
+### Fixed
+
+- Fix `cargo clippy` and `cargo fmt` issues ([`29219fc`])
+
+[0.2.1]: https://github.com/Rylan12/rslprompt/releases/tag/v0.2.1
+[`29219fc`]: https://github.com/Rylan12/rslprompt/commit/29219fc749d6b0d05e790a34c20e114a49b85fd3
+
 ## [0.2.0] - 2026-03-09
 
 ### Added

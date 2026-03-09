@@ -1,6 +1,6 @@
 [package]
 name = "rslprompt"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Rylan Polster <rslpolster@gmail.com>"]
 edition = "2024"
 description = "A fast, async zsh shell prompt."
