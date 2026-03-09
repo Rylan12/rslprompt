@@ -1,5 +1,9 @@
 use std::path::{Path, PathBuf};
 
+use nix::unistd::Pid;
+
+use crate::{background::get_background_data, context::AsyncValue};
+
 #[derive(Copy, Clone)]
 pub enum GitOperations {
     CherryPick,
@@ -31,6 +35,22 @@ impl GitOperations {
     }
 }
 
+/// The Git status of the current repository.
+pub enum GitStatus {
+    Clean,
+    Dirty,
+}
+
+impl GitStatus {
+    pub fn from_has_changes(has_changes: bool) -> Self {
+        if has_changes {
+            GitStatus::Dirty
+        } else {
+            GitStatus::Clean
+        }
+    }
+}
+
 pub struct GitContext {
     is_git_repo: bool,
     head_ref: Option<String>,
@@ -38,15 +58,25 @@ pub struct GitContext {
     remote_head_sha: Option<String>,
     num_stashes: usize,
     operations: Vec<GitOperations>,
+    status: AsyncValue<Option<GitStatus>>,
 }
 
 impl GitContext {
-    pub fn new(cwd: &Path) -> Self {
+    pub fn new(cwd: &Path, shell_pid: Option<Pid>, exec_no: Option<u64>) -> Self {
         let Some(root) = find_git_root(cwd) else {
             return Self::empty();
         };
 
         let (head_ref, head_sha, remote_head_sha) = get_git_head_info(root.as_ref());
+
+        let background_data = match (shell_pid, exec_no) {
+            (Some(pid), Some(exec_no)) => get_background_data(cwd, pid, exec_no),
+            _ => None,
+        };
+
+        let status = background_data
+            .map(|data| data.has_changes.map(GitStatus::from_has_changes))
+            .into();
 
         Self {
             is_git_repo: true,
@@ -55,6 +85,7 @@ impl GitContext {
             remote_head_sha,
             num_stashes: get_num_stashes(root.as_ref()),
             operations: get_git_operations(root.as_ref()),
+            status,
         }
     }
 
@@ -66,6 +97,7 @@ impl GitContext {
             remote_head_sha: None,
             num_stashes: 0,
             operations: Vec::new(),
+            status: AsyncValue::Pending,
         }
     }
 
@@ -97,6 +129,11 @@ impl GitContext {
     /// The current Git operations in progress (e.g. merge, rebase, etc).
     pub fn operations(&self) -> &[GitOperations] {
         &self.operations
+    }
+
+    /// The current Git status.
+    pub fn status(&self) -> &AsyncValue<Option<GitStatus>> {
+        &self.status
     }
 }
 

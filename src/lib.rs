@@ -1,3 +1,4 @@
+mod background;
 mod context;
 mod formatting;
 mod renderer;

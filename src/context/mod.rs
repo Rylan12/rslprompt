@@ -1,8 +1,26 @@
 use std::path::{Path, PathBuf};
 
+use nix::unistd::Pid;
+
 use crate::context::git::GitContext;
 
 mod git;
+
+/// Represents a value that might not be available yet.
+pub enum AsyncValue<T> {
+    Ready(T),
+    Pending,
+}
+
+impl<T> From<Option<T>> for AsyncValue<T> {
+    fn from(opt: Option<T>) -> Self {
+        if let Some(value) = opt {
+            AsyncValue::Ready(value)
+        } else {
+            AsyncValue::Pending
+        }
+    }
+}
 
 /// Information about the current shell state.
 pub struct Context {
@@ -19,8 +37,14 @@ impl Context {
     pub fn new() -> Self {
         let cwd = std::env::current_dir().ok();
 
+        let shell_pid = env("SHELL_PID")
+            .and_then(|val| val.parse::<i32>().ok())
+            .map(Pid::from_raw)
+            .filter(|pid| pid.as_raw() > 0);
+        let exec_no = env("PS1_EXEC_NO").and_then(|val| val.parse::<u64>().ok());
+
         let git = if let Some(cwd) = &cwd {
-            GitContext::new(cwd)
+            GitContext::new(cwd, shell_pid, exec_no)
         } else {
             GitContext::empty()
         };
