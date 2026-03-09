@@ -71,8 +71,7 @@ impl GitContext {
         let root = find_git_root(cwd)?;
         let git_dir = resolve_git_dir(&root)?;
         let common_dir = resolve_common_dir(&git_dir);
-        let (head_ref, head_sha, remote_head_sha) =
-            get_git_head_info(&root, &git_dir, &common_dir);
+        let (head_ref, head_sha, remote_head_sha) = get_git_head_info(&root, &git_dir, &common_dir);
 
         let background_data = match (shell_pid, exec_no) {
             (Some(pid), Some(exec_no)) => get_background_data(cwd, pid, exec_no),
@@ -255,10 +254,10 @@ fn lookup_packed_ref(common_dir: &Path, ref_path: &str) -> Option<String> {
         if line.starts_with('#') || line.starts_with('^') {
             continue;
         }
-        if let Some((sha, refname)) = line.split_once(' ') {
-            if refname == ref_path {
-                return Some(sha.to_string());
-            }
+        if let Some((sha, refname)) = line.split_once(' ')
+            && refname == ref_path
+        {
+            return Some(sha.to_string());
         }
     }
 
