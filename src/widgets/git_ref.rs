@@ -1,4 +1,9 @@
-use crate::{Context, widgets::Widget};
+use crate::{
+    Context,
+    context::{AsyncValue, GitStatus},
+    formatting::Color,
+    widgets::Widget,
+};
 
 /// Display the current working directory, using `~` for the home directory if applicable.
 pub struct GitRef;
@@ -18,5 +23,13 @@ impl Widget for GitRef {
         }
 
         Some("???".to_string())
+    }
+
+    fn color(&self, context: &Context) -> Color {
+        match context.git.status() {
+            AsyncValue::Ready(Some(GitStatus::Dirty)) => Color::Magenta,
+            AsyncValue::Ready(Some(GitStatus::Clean)) => Color::Green,
+            _ => Color::Default,
+        }
     }
 }

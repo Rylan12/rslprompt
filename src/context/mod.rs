@@ -6,6 +6,8 @@ use crate::context::git::GitContext;
 
 mod git;
 
+pub use git::GitStatus;
+
 /// Represents a value that might not be available yet.
 pub enum AsyncValue<T> {
     Ready(T),
