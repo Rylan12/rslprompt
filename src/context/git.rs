@@ -31,7 +31,7 @@ impl GitOperations {
     }
 }
 
-pub struct GitInfo {
+pub struct GitContext {
     is_git_repo: bool,
     head_ref: Option<String>,
     head_sha: Option<String>,
@@ -40,7 +40,7 @@ pub struct GitInfo {
     operations: Vec<GitOperations>,
 }
 
-impl GitInfo {
+impl GitContext {
     pub fn new(cwd: &Path) -> Self {
         let Some(root) = find_git_root(cwd) else {
             return Self::empty();

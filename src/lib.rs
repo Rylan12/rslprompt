@@ -1,6 +1,5 @@
 mod context;
 mod formatting;
-mod git;
 mod renderer;
 mod shell;
 mod widgets;
