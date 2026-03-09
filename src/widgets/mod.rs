@@ -8,6 +8,7 @@ mod git_sync;
 mod newline;
 mod path;
 mod prompt;
+mod world_worktree;
 
 /// A widget is a component of the prompt that can display content and have a color.
 /// Widgets are rendered in order to create the final prompt string.
@@ -34,6 +35,7 @@ pub trait Widget {
 
 pub const DEFAULT_WIDGETS: &[&dyn Widget] = &[
     &newline::Newline,
+    &world_worktree::WorldWorktree,
     &path::Path,
     &git_operations::GitOperations,
     &git_ref::GitRef,

@@ -2,9 +2,10 @@ use std::path::{Path, PathBuf};
 
 use nix::unistd::Pid;
 
-use crate::context::git::GitContext;
+use crate::context::{git::GitContext, world::WorldContext};
 
 mod git;
+mod world;
 
 pub use git::GitStatus;
 
@@ -28,6 +29,7 @@ impl<T> From<Option<T>> for AsyncValue<T> {
 pub struct Context {
     /// Information about the current directory's Git repository.
     pub git: GitContext,
+    pub world: Option<WorldContext>,
     cwd: Option<PathBuf>,
     home_dir: Option<PathBuf>,
     ssh_connection: bool,
@@ -38,6 +40,13 @@ pub struct Context {
 impl Context {
     pub fn new() -> Self {
         let cwd = std::env::current_dir().ok();
+        let home_dir = env("HOME").map(PathBuf::from);
+
+        let world = if let (Some(cwd), Some(home_dir)) = (&cwd, &home_dir) {
+            WorldContext::new(cwd, home_dir)
+        } else {
+            None
+        };
 
         let shell_pid = env("SHELL_PID")
             .and_then(|val| val.parse::<i32>().ok())
@@ -52,9 +61,10 @@ impl Context {
         };
 
         Self {
-            git,
             cwd,
-            home_dir: env("HOME").map(PathBuf::from),
+            git,
+            world,
+            home_dir,
             ssh_connection: env("SSH_CONNECTION").is_some(),
             exit_status: env("EXIT_STATUS").and_then(|val| val.parse::<u8>().ok()),
             vi_mode: env("VI_MODE"),
