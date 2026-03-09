@@ -34,7 +34,8 @@ precmd_functions+=(__ps1_exec_incr)
 
 # Enable async prompt updates via SIGALRM
 TRAPALRM() {{
-    if [[ -n \"$WIDGET\" ]]; then
+    # Only reset when ZLE is active (i.e. not while commands are running).
+    if [[ -n \"$ZLE_STATE\" ]]; then
         zle reset-prompt
     fi
 }}
