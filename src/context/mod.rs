@@ -114,5 +114,9 @@ impl Default for Context {
 }
 
 fn env(name: &str) -> Option<String> {
-    std::env::var(name).ok()
+    let Ok(value) = std::env::var(name) else {
+        return None;
+    };
+
+    if value.is_empty() { None } else { Some(value) }
 }
