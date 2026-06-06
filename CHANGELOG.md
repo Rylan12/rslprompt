@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.3] - 2026-06-06
+
+_No changes since [0.2.2]. Version bumped due to a release pipeline hiccup._
+
 ## [0.2.2] - 2026-06-06
 
 ### Fixed
