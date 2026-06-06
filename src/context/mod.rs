@@ -39,7 +39,7 @@ pub struct Context {
 impl Context {
     /// Create a new context by reading the current environment state.
     pub fn new() -> Self {
-        let cwd = std::env::current_dir().ok();
+        let cwd = pwd();
         let home_dir = env("HOME").map(PathBuf::from);
 
         let world = if let (Some(cwd), Some(home_dir)) = (&cwd, &home_dir) {
@@ -119,4 +119,13 @@ fn env(name: &str) -> Option<String> {
     };
 
     if value.is_empty() { None } else { Some(value) }
+}
+
+/// Check $PWD and fall back to std::env::current_dir().
+/// std::env::current_dir() canonicalizes the path, which can cause issues with symlinks.
+/// $PWD is more likely to reflect what the user expects to see.
+fn pwd() -> Option<PathBuf> {
+    env("PWD")
+        .map(PathBuf::from)
+        .or_else(|| std::env::current_dir().ok())
 }
