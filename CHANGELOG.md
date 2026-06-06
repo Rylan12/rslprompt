@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.2] - 2026-06-06
+
+- Use `$PWD` for the path widget to avoid canonicalization of the current working directory ([`16d8bd5`])
+- Treat env vars set to empty string as unset ([`40b8e52`])
+
+[0.2.2]: https://github.com/Rylan12/rslprompt/releases/tag/v0.2.2
+[`16d8bd5`]: https://github.com/Rylan12/rslprompt/commit/16d8bd5ebbef98d718ae89be61769548c61e2cce
+[`40b8e52`]: https://github.com/Rylan12/rslprompt/commit/40b8e52347b2945d8d8647537ef0038efdd64590
+
 ## [0.2.1] - 2026-03-09
 
 ### Fixed
