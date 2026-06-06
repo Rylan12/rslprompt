@@ -2,6 +2,8 @@
 
 ## [0.2.2] - 2026-06-06
 
+### Fixed
+
 - Use `$PWD` for the path widget to avoid canonicalization of the current working directory ([`16d8bd5`])
 - Treat env vars set to empty string as unset ([`40b8e52`])
 
