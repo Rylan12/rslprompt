@@ -1,3 +1,4 @@
+mod cmd_duration;
 mod exit_status;
 mod git_operations;
 mod git_ref;
@@ -42,6 +43,7 @@ pub const DEFAULT_WIDGETS: &[&dyn Widget] = &[
     &git_ref::GitRef,
     &git_stash::GitStash,
     &git_sync::GitSync,
+    &cmd_duration::CmdDuration,
     &exit_status::ExitStatus,
     &newline::Newline,
     &prompt::Prompt,

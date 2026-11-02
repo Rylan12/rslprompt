@@ -33,6 +33,7 @@ pub struct Context {
     home_dir: Option<PathBuf>,
     ssh_connection: bool,
     exit_status: Option<u8>,
+    cmd_duration_ms: Option<u64>,
     vi_mode: Option<String>,
 }
 
@@ -67,6 +68,7 @@ impl Context {
             home_dir,
             ssh_connection: env("SSH_CONNECTION").is_some(),
             exit_status: env("EXIT_STATUS").and_then(|val| val.parse::<u8>().ok()),
+            cmd_duration_ms: env("CMD_DURATION_MS").and_then(|val| val.parse::<u64>().ok()),
             vi_mode: env("VI_MODE"),
         }
     }
@@ -99,6 +101,11 @@ impl Context {
     /// The exit code status of the last command executed.
     pub fn exit_status(&self) -> Option<u8> {
         self.exit_status
+    }
+
+    /// How long the last command took to run, in milliseconds.
+    pub fn cmd_duration_ms(&self) -> Option<u64> {
+        self.cmd_duration_ms
     }
 
     /// The current VI mode (e.g. "i" for insert mode).

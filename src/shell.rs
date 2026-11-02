@@ -34,6 +34,26 @@ function __ps1_exec_incr() {{
 }}
 precmd_functions+=(__ps1_exec_incr)
 
+# Track how long the previous command took to run
+zmodload zsh/datetime
+__ps1_cmd_start=
+__ps1_cmd_duration_ms=
+function __ps1_cmd_timer_start() {{
+    __ps1_cmd_start=$EPOCHREALTIME
+}}
+function __ps1_cmd_timer_stop() {{
+    if [[ -n \"$__ps1_cmd_start\" ]]; then
+        local -i elapsed_ms=$(( (EPOCHREALTIME - __ps1_cmd_start) * 1000 ))
+        __ps1_cmd_duration_ms=$elapsed_ms
+    else
+        # No command was run (e.g. an empty line), so don't show a stale duration.
+        __ps1_cmd_duration_ms=
+    fi
+    __ps1_cmd_start=
+}}
+preexec_functions+=(__ps1_cmd_timer_start)
+precmd_functions+=(__ps1_cmd_timer_stop)
+
 # Enable async prompt updates via SIGALRM
 TRAPALRM() {{
     # Only reset when ZLE is active (i.e. not while commands are running).
@@ -42,7 +62,7 @@ TRAPALRM() {{
     fi
 }}
 
-PROMPT='$(PS1_EXEC_NO=$__ps1_exec_no VI_MODE=$ZVM_MODE EXIT_STATUS=$? SHELL_PID=$$ {})'",
+PROMPT='$(PS1_EXEC_NO=$__ps1_exec_no CMD_DURATION_MS=$__ps1_cmd_duration_ms VI_MODE=$ZVM_MODE EXIT_STATUS=$? SHELL_PID=$$ {})'",
         exec_path()
     )
 }
