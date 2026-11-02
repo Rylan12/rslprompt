@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0] - 2026-11-02
+
+### Added
+
+- Bump dependencies ([`fadbe0b`])
+- Add a command duration widget ([`a0b9f06`])
+
+[0.3.0]: https://github.com/Rylan12/rslprompt/releases/tag/v0.3.0
+[`fadbe0b`]: https://github.com/Rylan12/rslprompt/commit/fadbe0bd2f54098a664ed8b3dcf2fcaf3b82c47d
+[`a0b9f06`]: https://github.com/Rylan12/rslprompt/commit/a0b9f06cd05b7643ef047f01bef8ba43f65b2bda
+
 ## [0.2.3] - 2026-06-06
 
 _No changes since [0.2.2]. Version bumped due to a release pipeline hiccup._
